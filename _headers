@@ -1,0 +1,5 @@
+# Cloudflare Pages response headers. /* also covers /scoreboard and the index.html fallback Pages serves for unknown paths.
+# style-src needs 'unsafe-inline' for the <style> Font Awesome injects and for the inline styles in Wikipedia HTML,
+# which documents parsed with DOMParser check against this policy. img-src needs data: for Pico's form icons.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; connect-src https://en.wikipedia.org https://wikimedia.org; img-src 'self' data:; base-uri 'none'; form-action 'self'; frame-ancestors 'none'

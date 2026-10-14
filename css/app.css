@@ -1,0 +1,104 @@
+/* Scoreboard only: Pico variables scale every rem with a 16:9 stage that fits the window. */
+
+:root {
+  --stage: min(1vw, 16vh / 9); /* 1% of the stage width */
+  --pico-font-size: clamp(9px, var(--stage) * 1.5, 40px);
+  --pico-spacing: 0.75rem;
+  --pico-typography-spacing-vertical: 0.5rem;
+  --pico-nav-element-spacing-vertical: 0.25rem;
+}
+
+/* The --pico-color-* palette comes from pico.colors.min.css; without it marks lose their background. */
+body {
+  --pico-mark-background-color: var(--pico-color-amber-200);
+  --pico-mark-color: var(--pico-color-slate-950);
+}
+
+body[data-type="niche"] {
+  --pico-mark-background-color: var(--pico-color-violet-350);
+}
+
+h1 {
+  --pico-font-size: 3rem;
+}
+
+/* As a scroll container, the stage keeps its aspect ratio when content overflows. */
+#stage {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: calc(var(--stage) * 100);
+  aspect-ratio: 16 / 9;
+  padding: calc(var(--stage) * 2.5) calc(var(--stage) * 3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#sb-players {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: var(--pico-grid-column-gap);
+}
+
+#sb-players > article {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  overflow: hidden;
+}
+
+#sb-players > article[aria-current="true"] {
+  outline: calc(var(--stage) * 0.3) solid var(--pico-mark-background-color);
+}
+
+#sb-players > article > p {
+  margin: 0;
+  font-size: clamp(2rem, 30cqi, 5rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+/* Card text follows the card width, so six columns stay legible. */
+#sb-players h2 {
+  --pico-font-size: clamp(0.9rem, 13cqi, 1.75rem);
+}
+
+#sb-players hgroup > p {
+  font-size: clamp(0.6rem, 8cqi, 1rem);
+}
+
+/* Pick list: rows that overflow align to the bottom, so the oldest clip and the newest stay visible. */
+#sb-players > article > div {
+  flex: 1;
+  min-height: 0;
+  container-type: size;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: clip;
+}
+
+/* Takes the free space, so a list that fits stays at the top. */
+#sb-players > article > div::after {
+  content: '';
+  flex-grow: 1;
+}
+
+/* A row is two 1.25 lines plus 0.5em of padding and a border, under 3.2em, so this font fits the --rows
+   that scoreboard.js sets until it reaches the 0.5rem floor. */
+#sb-players table {
+  --pico-spacing: 0.5em;
+  margin: 0;
+  font-size: clamp(0.5rem, 100cqb / var(--rows) / 3.2, clamp(0.6rem, 8cqi, 1rem));
+  line-height: 1.25;
+}
+
+#sb-reveal table,
+#sb-standings table {
+  font-size: 1.5rem;
+}

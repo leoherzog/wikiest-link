@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Wikiest Link · Host</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <script src="js/theme.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css"
+    integrity="sha384-L1dWfspMTHU/ApYnFiMz2QID/PlP1xCW9visvBdbEkOLkSSWsP6ZJWhPw6apiXxU" crossorigin="anonymous">
+  <style>
+    /* Pico shrinks grouped buttons to their narrowest width, and browsers may break a line right after an icon. */
+    [role=group] > button, [role=search] > button, nav button { white-space: nowrap; }
+    #player-buttons { flex-wrap: wrap; }
+    /* On narrow screens the header buttons wrap below the title, still right-aligned. */
+    nav { flex-wrap: wrap; }
+    nav ul:last-of-type { margin-left: auto; }
+    /* An empty item would keep its padding and push the theme button off the right edge. */
+    li:has(> #open-scoreboard[hidden]) { display: none; }
+    /* Font Awesome keeps each fa-NAME class on the SVG it swaps in, so only the current theme's icon shows. */
+    :root[data-theme] #theme .fa-circle-half-stroke,
+    :root:not([data-theme=light]) #theme .fa-sun,
+    :root:not([data-theme=dark]) #theme .fa-moon { display: none; }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7/js/all.min.js"
+    data-mutate-approach="sync"></script>
+  <script type="module" src="js/host.js"></script>
+</head>
+<body>
+  <header class="container">
+    <nav>
+      <ul>
+        <li>
+          <strong><span class="fa-solid fa-link" aria-hidden="true"></span> The Wikiest Link</strong>
+        </li>
+        <li>
+          <small>
+            <span class="fa-solid fa-microphone-lines" aria-hidden="true"></span> host console
+          </small>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <button type="button" id="theme" class="secondary outline" aria-label="Theme: auto" title="Theme: auto">
+            <span class="fa-solid fa-circle-half-stroke" aria-hidden="true"></span>
+            <span class="fa-solid fa-sun" aria-hidden="true"></span>
+            <span class="fa-solid fa-moon" aria-hidden="true"></span>
+          </button>
+        </li>
+        <li>
+          <button type="button" id="open-scoreboard" class="secondary" hidden>
+            <span class="fa-solid fa-display" aria-hidden="true"></span> Open scoreboard
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <div id="message" role="status"></div>
+
+    <section id="lobby" hidden>
+      <h2><span class="fa-solid fa-users" aria-hidden="true"></span> Players</h2>
+      <form id="add-player">
+        <fieldset role="group">
+          <input name="name" placeholder="Player name" aria-label="Player name" autocomplete="off" required>
+          <button type="submit">
+            <span class="fa-solid fa-user-plus" aria-hidden="true"></span> Add
+          </button>
+        </fieldset>
+      </form>
+      <table>
+        <tbody id="player-list"></tbody>
+      </table>
+      <button type="button" id="start-game">
+        <span class="fa-solid fa-play" aria-hidden="true"></span> Start game
+      </button>
+    </section>
+
+    <section id="setup" hidden>
+      <h2>
+        <span class="fa-solid fa-magnifying-glass" aria-hidden="true"></span>
+        <span id="setup-heading">Choose a category</span>
+      </h2>
+      <form id="category-form" role="search" autocomplete="off">
+        <input type="search" name="q" list="suggestions" placeholder="Search Wikipedia or paste a URL"
+          aria-label="Category page">
+        <button type="submit">
+          <span class="fa-solid fa-hammer" aria-hidden="true"></span> Build
+        </button>
+      </form>
+      <datalist id="suggestions"></datalist>
+
+      <div id="build" hidden>
+        <div id="build-name">
+          <span class="fa-solid fa-chart-line" aria-hidden="true"></span>
+          <span id="build-label">Starting</span>
+        </div>
+        <progress id="build-progress" aria-labelledby="build-name"></progress>
+      </div>
+
+      <article id="review" hidden>
+        <header>
+          <hgroup>
+            <h3>
+              <span class="fa-solid fa-table-list" aria-hidden="true"></span>
+              <span id="review-title"></span>
+            </h3>
+            <p id="review-meta"></p>
+          </hgroup>
+        </header>
+        <form id="round-form">
+          <label><span class="fa-solid fa-sliders" aria-hidden="true"></span> Round type
+            <select name="type">
+              <option value="market">Market Share · most views wins</option>
+              <option value="niche">Niche Market · fewest views wins</option>
+            </select>
+          </label>
+          <label>
+            <input type="checkbox" name="final" role="switch">
+            <span class="fa-solid fa-fire-flame-curved" aria-hidden="true"></span> Final round
+          </label>
+          <p id="review-summary"></p>
+          <button type="submit" id="start-round">
+            <span class="fa-solid fa-circle-play" aria-hidden="true"></span> Start round
+          </button>
+        </form>
+        <fieldset role="group">
+          <input type="search" id="review-filter" placeholder="Filter board" aria-label="Filter board">
+          <select id="review-sort" aria-label="Sort board">
+            <option value="views:desc">Most views</option>
+            <option value="views:asc">Fewest views</option>
+            <option value="title:asc">Title A–Z</option>
+            <option value="title:desc">Title Z–A</option>
+            <option value="valid:desc">Valid first</option>
+            <option value="valid:asc">Unchecked first</option>
+            <option value="description:asc">Description A–Z</option>
+          </select>
+        </fieldset>
+        <table id="review-board">
+          <thead>
+            <tr>
+              <th scope="col" data-key="valid">
+                <span class="fa-solid fa-check" aria-hidden="true"></span> Valid
+              </th>
+              <th scope="col" data-key="title">Title</th>
+              <th scope="col" data-key="description">Description</th>
+              <th scope="col" data-key="views">
+                <span class="fa-solid fa-eye" aria-hidden="true"></span> Pageviews
+              </th>
+              <th scope="col"><span class="fa-solid fa-star" aria-hidden="true"></span> Points</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </article>
+
+      <button type="button" id="end-game-setup" class="contrast outline" hidden>
+        <span class="fa-solid fa-trophy" aria-hidden="true"></span> End game
+      </button>
+    </section>
+
+    <section id="playing" hidden>
+      <hgroup>
+        <h2>
+          <span class="fa-solid fa-flag" aria-hidden="true"></span>
+          <span id="play-title"></span>
+        </h2>
+        <p id="play-meta"></p>
+      </hgroup>
+
+      <hgroup>
+        <h3>
+          <span class="fa-solid fa-hand-point-right" aria-hidden="true"></span>
+          <span id="turn-name"></span>
+        </h3>
+        <p id="turn-detail"></p>
+      </hgroup>
+      <fieldset id="player-buttons" role="group" aria-label="Give the next answer to"></fieldset>
+
+      <form id="answer-form" autocomplete="off">
+        <input type="search" name="answer" placeholder="What did they say?" aria-label="Answer">
+        <fieldset role="group">
+          <button type="button" id="search-live" class="secondary">
+            <span class="fa-solid fa-magnifying-glass" aria-hidden="true"></span> Search Wikipedia
+          </button>
+          <button type="button" id="miss" class="contrast">
+            <span class="fa-solid fa-xmark" aria-hidden="true"></span> Miss
+          </button>
+        </fieldset>
+      </form>
+      <p id="last-pick" role="status"></p>
+
+      <article id="lookup" hidden>
+        <header id="lookup-status"></header>
+        <select id="lookup-results" aria-label="Wikipedia results" hidden></select>
+        <section id="lookup-detail">
+          <hgroup>
+            <h4 id="lookup-title"></h4>
+            <p id="lookup-desc"></p>
+          </hgroup>
+          <p id="lookup-stats"></p>
+        </section>
+        <footer id="lookup-actions">
+          <button type="button" id="rule-counts">
+            <span class="fa-solid fa-check" aria-hidden="true"></span> Counts
+          </button>
+          <button type="button" id="rule-nofit" class="secondary">
+            <span class="fa-solid fa-ban" aria-hidden="true"></span> Doesn't fit
+          </button>
+        </footer>
+      </article>
+
+      <p>
+        <button type="button" id="undo" class="secondary outline">
+          <span class="fa-solid fa-rotate-left" aria-hidden="true"></span> Undo last
+        </button>
+        <button type="button" id="end-round" class="outline">
+          <span class="fa-solid fa-flag-checkered" aria-hidden="true"></span> End round
+        </button>
+      </p>
+
+      <table>
+        <caption>
+          <span class="fa-solid fa-clipboard-list" aria-hidden="true"></span> Picks this round
+        </caption>
+        <thead>
+          <tr><th scope="col">#</th><th scope="col">Player</th><th scope="col">Answer</th>
+            <th scope="col"><span class="fa-solid fa-eye" aria-hidden="true"></span> Views</th>
+            <th scope="col"><span class="fa-solid fa-star" aria-hidden="true"></span> Points</th>
+          </tr>
+        </thead>
+        <tbody id="picks-log"></tbody>
+      </table>
+
+      <table id="play-board">
+        <thead>
+          <tr>
+            <th scope="col"><span class="fa-solid fa-check" aria-hidden="true"></span> Valid</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col"><span class="fa-solid fa-eye" aria-hidden="true"></span> Pageviews</th>
+            <th scope="col"><span class="fa-solid fa-star" aria-hidden="true"></span> Points</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section id="ended" hidden>
+      <hgroup>
+        <h2>
+          <span class="fa-solid fa-flag-checkered" aria-hidden="true"></span>
+          <span id="ended-title"></span>
+        </h2>
+        <p id="ended-meta"></p>
+      </hgroup>
+      <article>
+        <header>
+          <span class="fa-solid fa-eye" aria-hidden="true"></span> <span id="reveal-heading"></span>
+        </header>
+        <ol id="reveal-list"></ol>
+        <footer>
+          <button type="button" id="toggle-reveal">
+            <span class="fa-solid fa-display" aria-hidden="true"></span>
+            <span id="toggle-reveal-text">Show reveal on scoreboard</span>
+          </button>
+        </footer>
+      </article>
+      <p>
+        <button type="button" id="undo-end" class="secondary outline">
+          <span class="fa-solid fa-rotate-left" aria-hidden="true"></span> Undo last
+        </button>
+        <button type="button" id="next-round">
+          <span class="fa-solid fa-forward" aria-hidden="true"></span> Next round
+        </button>
+        <button type="button" id="end-game" class="contrast">
+          <span class="fa-solid fa-trophy" aria-hidden="true"></span> End game
+        </button>
+      </p>
+    </section>
+
+    <section id="over" hidden>
+      <h2 id="over-heading" tabindex="-1">
+        <span class="fa-solid fa-ranking-star" aria-hidden="true"></span> Final standings
+      </h2>
+      <table>
+        <thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">Total</th>
+          <th scope="col">Final round</th></tr></thead>
+        <tbody id="final-standings"></tbody>
+      </table>
+    </section>
+
+    <details>
+      <summary><span class="fa-solid fa-gear" aria-hidden="true"></span> Settings</summary>
+      <form id="settings-form">
+        <label>
+          <span class="fa-solid fa-hashtag" aria-hidden="true"></span> Picks per player per round
+          <input type="number" name="picks" min="1" max="10" step="1">
+        </label>
+        <label>
+          <span class="fa-solid fa-list-ol" aria-hidden="true"></span> Turn order
+          <select name="order" aria-describedby="order-help">
+            <option value="snake">Snake</option>
+            <option value="linear">Linear</option>
+            <option value="catchup">Catch-up</option>
+          </select>
+          <small id="order-help">
+            Snake runs 1-2-3-3-2-1 and linear runs 1-2-3-1-2-3, both starting one seat later each round.
+            Catch-up snakes from the lowest total, ties in seating order. Changes apply from the next round.
+          </small>
+        </label>
+        <button type="button" id="new-game" class="contrast" commandfor="confirm-new" command="show-modal">
+          <span class="fa-solid fa-arrows-rotate" aria-hidden="true"></span> New game
+        </button>
+      </form>
+    </details>
+  </main>
+
+  <dialog id="confirm-new" aria-labelledby="confirm-new-title">
+    <article>
+      <h3 id="confirm-new-title">
+        <span class="fa-solid fa-triangle-exclamation" aria-hidden="true"></span> Start a new game?
+      </h3>
+      <p>This clears every round and score. Players and settings stay.</p>
+      <footer>
+        <form method="dialog">
+          <button value="cancel" class="secondary">
+            <span class="fa-solid fa-xmark" aria-hidden="true"></span> Cancel
+          </button>
+          <button value="confirm">
+            <span class="fa-solid fa-arrows-rotate" aria-hidden="true"></span> New game
+          </button>
+        </form>
+      </footer>
+    </article>
+  </dialog>
+
+  <template id="tpl-player-row">
+    <tr>
+      <th scope="row"><span class="fa-solid fa-user" aria-hidden="true"></span></th>
+      <td>
+        <fieldset role="group">
+          <button type="button" class="secondary outline" data-act="up" aria-label="Move up">
+            <span class="fa-solid fa-arrow-up" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="secondary outline" data-act="down" aria-label="Move down">
+            <span class="fa-solid fa-arrow-down" aria-hidden="true"></span>
+          </button>
+          <button type="button" class="contrast outline" data-act="remove" aria-label="Remove">
+            <span class="fa-solid fa-user-minus" aria-hidden="true"></span> Remove
+          </button>
+        </fieldset>
+      </td>
+    </tr>
+  </template>
+
+  <template id="tpl-board-row">
+    <tr>
+      <td><input type="checkbox"></td>
+      <th scope="row"></th>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </template>
+</body>
+</html>

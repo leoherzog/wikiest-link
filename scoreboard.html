@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Wikiest Link · Scoreboard</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css" integrity="sha384-L1dWfspMTHU/ApYnFiMz2QID/PlP1xCW9visvBdbEkOLkSSWsP6ZJWhPw6apiXxU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7/js/all.min.js"
+    data-mutate-approach="sync"></script>
+  <script type="module" src="js/scoreboard.js"></script>
+</head>
+<body data-type="market">
+  <main id="stage">
+    <nav>
+      <ul>
+        <li><mark id="sb-type">THE WIKIEST LINK</mark></li>
+        <li id="sb-goal"></li>
+      </ul>
+      <ul>
+        <li id="sb-round"></li>
+        <li id="sb-final" hidden><mark><span class="fa-solid fa-fire-flame-curved" aria-hidden="true"></span> FINAL ROUND</mark></li>
+      </ul>
+    </nav>
+
+    <hgroup>
+      <h1 id="sb-category"></h1>
+      <p id="sb-period"></p>
+    </hgroup>
+
+    <section id="sb-players" aria-label="Players"></section>
+
+    <article id="sb-reveal" hidden>
+      <header>
+        <h2><span class="fa-solid fa-eye" aria-hidden="true"></span> <span id="sb-reveal-title"></span></h2>
+      </header>
+      <table>
+        <tbody id="sb-reveal-body"></tbody>
+      </table>
+    </article>
+
+    <article id="sb-standings" hidden>
+      <table>
+        <tbody id="sb-standings-body"></tbody>
+      </table>
+      <footer id="sb-tiebreak" hidden>
+        <span class="fa-solid fa-scale-balanced" aria-hidden="true"></span> Equal totals split by final-round score.
+      </footer>
+    </article>
+
+    <footer id="sb-upnext">
+      <small><span class="fa-solid fa-angles-right" aria-hidden="true"></span> UP NEXT</small>
+      <strong id="sb-next"></strong>
+    </footer>
+  </main>
+
+  <template id="tpl-player">
+    <article>
+      <header>
+        <hgroup>
+          <h2></h2>
+          <p>&nbsp;</p>
+        </hgroup>
+      </header>
+      <p></p>
+      <div>
+        <table>
+          <tbody></tbody>
+        </table>
+      </div>
+    </article>
+  </template>
+
+  <template id="tpl-pick">
+    <tr>
+      <td><strong></strong><br><small><span class="fa-solid fa-eye" aria-hidden="true"></span></small></td>
+      <td><strong></strong></td>
+    </tr>
+  </template>
+
+  <template id="tpl-miss">
+    <tr>
+      <td><s></s><br><small><span class="fa-solid fa-xmark" aria-hidden="true"></span> miss</small></td>
+      <td><strong></strong></td>
+    </tr>
+  </template>
+
+  <template id="tpl-empty">
+    <tr>
+      <td>—</td>
+      <td></td>
+    </tr>
+  </template>
+
+  <template id="tpl-reveal">
+    <tr>
+      <th scope="row"></th>
+      <td><span class="fa-solid fa-eye" aria-hidden="true"></span></td>
+    </tr>
+  </template>
+
+  <template id="tpl-reveal-none">
+    <tr>
+      <td colspan="2">Every valid answer was picked.</td>
+    </tr>
+  </template>
+
+  <template id="tpl-standing">
+    <tr>
+      <td></td>
+      <th scope="row"></th>
+      <td></td>
+    </tr>
+  </template>
+</body>
+</html>
