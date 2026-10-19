@@ -15,6 +15,8 @@ const SCOREBOARD_URL = 'scoreboard.html';
 const SCOREBOARD_NAME = 'wikiest-link-scoreboard';
 const SCOREBOARD_FEATURES = 'popup,width=1280,height=720';
 const MAX_PLAYERS = 6;
+// Phases before the first round, when there is nothing for the scoreboard to show.
+const BEFORE_GAME = ['splash', 'welcome', 'lobby'];
 const MISS_LABELS = { miss: 'Miss', nofit: 'Doesn\'t fit', repeat: 'Repeat' };
 
 function defaultUi() {
@@ -84,10 +86,16 @@ function openScoreboard() {
 }
 
 function renderHeader() {
-  $('open-scoreboard').hidden = (state.phase === 'welcome' || state.phase === 'lobby') && !popupBlocked;
+  $('open-scoreboard').hidden = BEFORE_GAME.includes(state.phase) && !popupBlocked;
 }
 
-// ---------- Welcome ----------
+// ---------- Splash and welcome ----------
+
+$('begin-game').addEventListener('click', function () {
+  state.phase = 'welcome';
+  commit();
+  $('welcome-heading').focus();
+});
 
 $('start-new-game').addEventListener('click', function () {
   state.phase = 'lobby';
@@ -1063,8 +1071,9 @@ $('confirm-new').addEventListener('close', function (event) {
 
 // ---------- Render and restore ----------
 
-// Each phase has a section with the same id. The welcome section is static.
+// Each phase has a section with the same id. The splash and welcome sections are static.
 const PHASES = {
+  splash: function () {},
   welcome: function () {},
   lobby: renderLobby,
   setup: renderSetup,
@@ -1075,7 +1084,7 @@ const PHASES = {
 
 function render() {
   Object.keys(PHASES).forEach(function (phase) { $(phase).hidden = phase !== state.phase; });
-  $('settings').hidden = state.phase === 'welcome';
+  $('settings').hidden = state.phase === 'splash' || state.phase === 'welcome';
   renderHeader();
   PHASES[state.phase]();
   renderSettings();

@@ -23,7 +23,7 @@ Link previews and search engines need absolute URLs, so the host page's canonica
 
 ## How a game runs
 
-1. Press "Start new game" on the welcome page, which explains the game to first-time visitors and search engines. Add up to six players, reorder them, and press "Start game".
+1. Press "Begin game" on the splash screen, then "Start new game" on the welcome page, which explains the game to first-time visitors and search engines. Add up to six players, reorder them, and press "Start game".
 2. Search for a category page or paste its URL to build its board. Finished boards are cached per title and twelve-month period, so rebuilding one is instant.
 3. Review the board, pick Market Share or Niche Market, mark the final round, and press "Start round". It stays disabled until a checked item has pageviews.
 4. Type what each player says. Enter takes the top board match, and "Search Wikipedia" looks up anything off the board for you to rule on; Enter does the same when nothing on the board matches. "Miss" records 0, "Undo last" reverses the latest pick, and a status line under the answer box reads back the last pick and who is up. Click a player's name to give them the next answer out of turn.

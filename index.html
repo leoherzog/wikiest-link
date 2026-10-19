@@ -74,17 +74,72 @@
     }
     /* Acme and Permanent Marker ship one weight, so bold text in them keeps it instead of a synthesized bold. */
     h1, h2, h3, h4, h5, h6 { --pico-font-family: var(--display-font); font-synthesis-weight: none; }
-    /* The wordmark is the page's h1, so it drops Pico's heading margin and tight line height. */
-    #brand {
-      margin: 0;
-      line-height: inherit;
+    #brand, #splash h1 {
       font-family: var(--marker-font);
-      font-size: 1.25rem;
       font-synthesis-weight: none;
       color: var(--pico-primary);
       background: linear-gradient(90deg, var(--pico-primary), var(--pico-primary-hover));
       background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+    /* The wordmark is the page's h1, so it drops Pico's heading margin and tight line height. */
+    #brand {
+      margin: 0;
+      line-height: inherit;
+      font-size: 1.25rem;
+    }
+    /* The splash wordmark stands in for the header's, so only one h1 shows at a time. */
+    body:has(#splash:not([hidden])) nav > ul:first-of-type { display: none; }
+    #splash {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: max(24rem, 100svh - 14rem);
+      text-align: center;
+      background: radial-gradient(closest-side, color-mix(in srgb, var(--pico-primary) 16%, transparent), transparent);
+    }
+    #splash > .fa-link {
+      font-size: clamp(3rem, 10vw, 5rem);
+      color: var(--pico-primary);
+    }
+    #splash hgroup { margin-block: 1rem 1.5rem; }
+    /* The padding keeps Permanent Marker's tall glyphs inside the box, since the gradient fill paints only within it. */
+    #splash h1 {
+      width: fit-content;
+      margin-inline: auto;
+      padding-block: 0.1em;
+      /* The wordmark is about 10.5em wide, so phones fit it on one line inside the container's gutters. */
+      font-size: clamp(1.5rem, (100vw - 3rem) / 10.5, 6rem);
+      line-height: 1.1;
+      text-wrap: balance;
+      filter: drop-shadow(0 0.05em 0.25em color-mix(in srgb, var(--pico-primary) 35%, transparent));
+    }
+    #splash hgroup > p {
+      font-family: var(--display-font);
+      font-size: clamp(1.25rem, 4vw, 1.75rem);
+      color: var(--pico-h2-color);
+    }
+    #splash > p { max-width: 34rem; }
+    #begin-game {
+      padding-inline: 2em;
+      font-size: 1.25rem;
+      font-family: var(--display-font);
+      white-space: nowrap;
+    }
+    /* Each child rises in turn, so the title card assembles like a show opening. */
+    @media (prefers-reduced-motion: no-preference) {
+      #splash > * { animation: splash-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+      #splash > .fa-link { animation-name: splash-swing; }
+      #splash > :nth-child(2) { animation-delay: 0.12s; }
+      #splash > :nth-child(3) { animation-delay: 0.3s; }
+      #splash > :nth-child(4) { animation-delay: 0.45s; }
+    }
+    @keyframes splash-rise {
+      from { opacity: 0; transform: translateY(1rem); }
+    }
+    @keyframes splash-swing {
+      from { opacity: 0; transform: rotate(-45deg) scale(0.5); }
     }
     /* Pico shrinks grouped buttons to their narrowest width, and browsers may break a line right after an icon. */
     [role=group] > button, [role=search] > button, nav button { white-space: nowrap; }
@@ -140,9 +195,24 @@
   <main class="container">
     <div id="message" role="status"></div>
 
+    <section id="splash" hidden>
+      <span class="fa-solid fa-link" aria-hidden="true"></span>
+      <hgroup>
+        <h1>The Wikiest Link</h1>
+        <p>A Wikipedia pageviews game show</p>
+      </hgroup>
+      <p>
+        Name what belongs on a Wikipedia list, and score by how many people read it. Host up to six players right from
+        your browser.
+      </p>
+      <button type="button" id="begin-game">
+        <span class="fa-solid fa-play" aria-hidden="true"></span> Begin game
+      </button>
+    </section>
+
     <section id="welcome" hidden>
       <hgroup>
-        <h2>The game show where Wikipedia keeps score</h2>
+        <h2 id="welcome-heading" tabindex="-1">The game show where Wikipedia keeps score</h2>
         <p>Pick a Wikipedia list, name what's on it, and let a year of pageviews decide who wins.</p>
       </hgroup>
       <div class="grid">
