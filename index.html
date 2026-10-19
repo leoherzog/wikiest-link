@@ -88,6 +88,8 @@
       line-height: inherit;
       font-size: 1.25rem;
     }
+    /* The link takes the h1's color for the icon and lets the h1's gradient show through its text. */
+    #brand a { color: inherit; text-decoration: none; }
     /* The splash wordmark stands in for the header's, so only one h1 shows at a time. */
     body:has(#splash:not([hidden])) nav > ul:first-of-type { display: none; }
     #splash {
@@ -148,6 +150,8 @@
     #welcome .grid { margin-bottom: var(--pico-block-spacing-vertical); }
     #welcome article, #welcome article > :last-child { margin-bottom: 0; }
     body > footer { color: var(--pico-muted-color); }
+    /* Headings take focus only so screen readers announce a new view; they are not controls, so they skip the ring. */
+    h1[tabindex="-1"]:focus, h2[tabindex="-1"]:focus { outline: none; }
     /* On narrow screens the header buttons wrap below the title, still right-aligned. */
     nav { flex-wrap: wrap; }
     nav ul:last-of-type { margin-left: auto; }
@@ -167,7 +171,9 @@
     <nav>
       <ul>
         <li>
-          <h1 id="brand"><span class="fa-solid fa-link" aria-hidden="true"></span> The Wikiest Link</h1>
+          <h1 id="brand">
+            <a href="./" id="brand-link"><span class="fa-solid fa-link" aria-hidden="true"></span> The Wikiest Link</a>
+          </h1>
         </li>
         <li>
           <small>
@@ -198,7 +204,7 @@
     <section id="splash" hidden>
       <span class="fa-solid fa-link" aria-hidden="true"></span>
       <hgroup>
-        <h1>The Wikiest Link</h1>
+        <h1 tabindex="-1">The Wikiest Link</h1>
         <p>A Wikipedia pageviews game show</p>
       </hgroup>
       <p>
@@ -206,13 +212,13 @@
         your browser.
       </p>
       <button type="button" id="begin-game">
-        <span class="fa-solid fa-play" aria-hidden="true"></span> Begin game
+        <span class="fa-solid fa-play" aria-hidden="true"></span> <span id="begin-game-text">Begin game</span>
       </button>
     </section>
 
     <section id="welcome" hidden>
       <hgroup>
-        <h2 id="welcome-heading" tabindex="-1">The game show where Wikipedia keeps score</h2>
+        <h2 tabindex="-1">The game show where Wikipedia keeps score</h2>
         <p>Pick a Wikipedia list, name what's on it, and let a year of pageviews decide who wins.</p>
       </hgroup>
       <div class="grid">
@@ -248,7 +254,7 @@
     </section>
 
     <section id="lobby" hidden>
-      <h2><span class="fa-solid fa-users" aria-hidden="true"></span> Players</h2>
+      <h2 tabindex="-1"><span class="fa-solid fa-users" aria-hidden="true"></span> Players</h2>
       <form id="add-player">
         <fieldset role="group">
           <input name="name" placeholder="Player name" aria-label="Player name" autocomplete="off" required>
@@ -266,7 +272,7 @@
     </section>
 
     <section id="setup" hidden>
-      <h2>
+      <h2 tabindex="-1">
         <span class="fa-solid fa-magnifying-glass" aria-hidden="true"></span>
         <span id="setup-heading">Choose a category</span>
       </h2>
@@ -350,7 +356,7 @@
 
     <section id="playing" hidden>
       <hgroup>
-        <h2>
+        <h2 tabindex="-1">
           <span class="fa-solid fa-flag" aria-hidden="true"></span>
           <span id="play-title"></span>
         </h2>
@@ -437,7 +443,7 @@
 
     <section id="ended" hidden>
       <hgroup>
-        <h2>
+        <h2 tabindex="-1">
           <span class="fa-solid fa-flag-checkered" aria-hidden="true"></span>
           <span id="ended-title"></span>
         </h2>

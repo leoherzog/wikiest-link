@@ -21,7 +21,7 @@ const MISS_LABELS = { miss: 'Miss', nofit: 'Doesn\'t fit', repeat: 'Repeat' };
 
 function defaultUi() {
   return {
-    q: '', filter: '', answer: '', sort: 'views:desc', lookup: null, building: null, draft: null
+    q: '', filter: '', answer: '', sort: 'views:desc', lookup: null, building: null, draft: null, home: false
   };
 }
 
@@ -91,10 +91,23 @@ function renderHeader() {
 
 // ---------- Splash and welcome ----------
 
+// The wordmark shows the splash as host-only UI state, so a game in progress keeps its phase and scoreboard.
+// Modified clicks fall through to the link.
+$('brand-link').addEventListener('click', function (event) {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  ui.home = true;
+  saveUi(ui);
+  render();
+  focusView();
+});
+
 $('begin-game').addEventListener('click', function () {
-  state.phase = 'welcome';
+  ui.home = false;
+  saveUi(ui);
+  if (state.phase === 'splash') state.phase = 'welcome';
   commit();
-  $('welcome-heading').focus();
+  focusView();
 });
 
 $('start-new-game').addEventListener('click', function () {
@@ -1082,9 +1095,20 @@ const PHASES = {
   over: renderOver
 };
 
+function view() {
+  return ui.home ? 'splash' : state.phase;
+}
+
+// A section's first heading takes focus when the view switches to it, as after a page load.
+function focusView() {
+  $(view()).querySelector('h1, h2').focus();
+}
+
 function render() {
-  Object.keys(PHASES).forEach(function (phase) { $(phase).hidden = phase !== state.phase; });
-  $('settings').hidden = state.phase === 'splash' || state.phase === 'welcome';
+  const shown = view();
+  Object.keys(PHASES).forEach(function (phase) { $(phase).hidden = phase !== shown; });
+  $('settings').hidden = shown === 'splash' || shown === 'welcome';
+  $('begin-game-text').textContent = BEFORE_GAME.includes(state.phase) ? 'Begin game' : 'Return to game';
   renderHeader();
   PHASES[state.phase]();
   renderSettings();

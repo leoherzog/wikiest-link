@@ -29,7 +29,7 @@ Link previews and search engines need absolute URLs, so the host page's canonica
 4. Type what each player says. Enter takes the top board match, and "Search Wikipedia" looks up anything off the board for you to rule on; Enter does the same when nothing on the board matches. "Miss" records 0, "Undo last" reverses the latest pick, and a status line under the answer box reads back the last pick and who is up. Click a player's name to give them the next answer out of turn.
 5. End the round, optionally show the reveal on the scoreboard, and move on. "End game" shows final standings.
 
-Settings sets the picks each player makes per round and the turn order, both applying from the next round. "New game" clears rounds and scores and returns to the lobby, keeping the players and settings. The theme button in the header cycles the host console through auto, light and dark, where auto follows the system setting. The scoreboard always uses Pico's dark theme.
+Settings sets the picks each player makes per round and the turn order, both applying from the next round. "New game" clears rounds and scores and returns to the lobby, keeping the players and settings. The wordmark in the header returns to the splash screen, whose button then returns to the game without changing it or the scoreboard. The theme button in the header cycles the host console through auto, light and dark, where auto follows the system setting. The scoreboard always uses Pico's dark theme.
 
 The scoreboard never shows the board or would-be points, and unpicked answers appear only in the reveal. A player's pick rows shrink to fit their card, and past a minimum size the oldest clip so the newest stay visible.
 
