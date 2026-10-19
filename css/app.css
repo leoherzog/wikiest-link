@@ -6,6 +6,14 @@
   --pico-spacing: 0.75rem;
   --pico-typography-spacing-vertical: 0.5rem;
   --pico-nav-element-spacing-vertical: 0.25rem;
+  --display-font: Acme, var(--pico-font-family-sans-serif);
+  --marker-font: 'Permanent Marker', 'Segoe Print', 'Bradley Hand', Chilanka, casual, cursive;
+}
+
+/* Acme and Permanent Marker ship one weight, so bold text in them keeps it instead of a synthesized bold. */
+h2, nav, mark, #sb-players > article > p, #sb-standings, #sb-upnext {
+  font-family: var(--display-font);
+  font-synthesis-weight: none;
 }
 
 /* The --pico-color-* palette comes from pico.colors.min.css; without it marks lose their background. */
@@ -18,8 +26,16 @@ body[data-type="niche"] {
   --pico-mark-background-color: var(--pico-color-violet-350);
 }
 
+/* The padding keeps Permanent Marker's tall glyphs inside the box, since the gradient fill paints only within it. */
 h1 {
   --pico-font-size: 3rem;
+  width: fit-content;
+  padding-block: 0.1em;
+  font-family: var(--marker-font);
+  font-synthesis-weight: none;
+  background: linear-gradient(90deg, var(--pico-primary), var(--pico-primary-hover));
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 /* As a scroll container, the stage keeps its aspect ratio when content overflows. */

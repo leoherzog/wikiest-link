@@ -66,11 +66,11 @@ The host console is the only writer. The scoreboard re-renders on `storage` even
 | `js/wiki.js` | Wikipedia and pageviews client, board building |
 | `js/scoring.js` | Round scoring, turn order, standings |
 | `js/dom.js` | Element lookup, number formatting, icons, and round type copy shared by both pages |
-| `css/app.css` | Scoreboard stage, type scaling and mark colors; the host's few rules sit in `index.html` |
-| `favicon.svg` | Tab icon: Font Awesome's `link` in Pico's azure-550, or azure-350 in dark mode, as literal hex because an SVG image cannot read CSS variables |
+| `css/app.css` | Scoreboard stage, type scaling, fonts and mark colors; the host's few rules sit in `index.html` |
+| `favicon.svg` | Tab icon: Font Awesome's `link` in Pico's orange-550, or orange-350 in dark mode, as literal hex because an SVG image cannot read CSS variables |
 | `_headers` | Content Security Policy for Cloudflare Pages |
 
-Both pages load Pico CSS 2.1.1 from jsDelivr with a Subresource Integrity hash, so a version change means updating `integrity` in both pages. The scoreboard also loads Pico's color palette, `pico.colors.min.css`, from the floating `@2` tag with no integrity hash, and takes its amber and violet mark colors from it. They also load Font Awesome Free 7 from jsDelivr. Icons are `<span class="fa-solid fa-…">` elements, built in scripts with `icon()` from `js/dom.js`, and Font Awesome's script swaps each for an inline SVG, including spans added later.
+Both pages load Pico CSS 2.1.1's orange theme, `pico.orange.min.css`, from jsDelivr with a Subresource Integrity hash, so a version change means updating `integrity` in both pages. They load the Acme and Permanent Marker fonts from Fontsource on jsDelivr the same way, hashing each package's `index.css`, because jsDelivr minifies `.min.css` files on request and their hashes can change. Headings and the scoreboard's labels, names and scores use Acme, and the host's wordmark and the scoreboard's title use Permanent Marker. The scoreboard also loads Pico's color palette, `pico.colors.min.css`, from the floating `@2` tag with no integrity hash, and takes its amber and violet mark colors from it. They also load Font Awesome Free 7 from jsDelivr. Icons are `<span class="fa-solid fa-…">` elements, built in scripts with `icon()` from `js/dom.js`, and Font Awesome's script swaps each for an inline SVG, including spans added later.
 
 ## License
 

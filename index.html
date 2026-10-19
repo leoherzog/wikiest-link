@@ -6,9 +6,28 @@
   <title>The Wikiest Link · Host</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <script src="js/theme.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.min.css"
-    integrity="sha384-L1dWfspMTHU/ApYnFiMz2QID/PlP1xCW9visvBdbEkOLkSSWsP6ZJWhPw6apiXxU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.orange.min.css"
+    integrity="sha384-Lm2BRg+RVlMvrTWma56pxmcU1F+JLC10iu1gmc37k8aBIhcsVT4htOZ7eubKpUV7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/acme@5.3.0/index.css"
+    integrity="sha384-U2Cwo4qBTs74k28Xy82giXTL4Hl4gcASesb5uRlclWjZdE051iTEwHlW05jSvPJi" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/permanent-marker@5.3.0/index.css"
+    integrity="sha384-CMsh6IR48JKQQPH0gJJDTlh/8atPvP99yKNCRbdaYanh1YOamHlq4z3zfA6Ady11" crossorigin="anonymous">
   <style>
+    :root {
+      --display-font: Acme, var(--pico-font-family-sans-serif);
+      --marker-font: 'Permanent Marker', 'Segoe Print', 'Bradley Hand', Chilanka, casual, cursive;
+    }
+    /* Acme and Permanent Marker ship one weight, so bold text in them keeps it instead of a synthesized bold. */
+    h1, h2, h3, h4, h5, h6 { --pico-font-family: var(--display-font); font-synthesis-weight: none; }
+    #brand {
+      font-family: var(--marker-font);
+      font-size: 1.25rem;
+      font-synthesis-weight: none;
+      color: var(--pico-primary);
+      background: linear-gradient(90deg, var(--pico-primary), var(--pico-primary-hover));
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     /* Pico shrinks grouped buttons to their narrowest width, and browsers may break a line right after an icon. */
     [role=group] > button, [role=search] > button, nav button { white-space: nowrap; }
     #player-buttons { flex-wrap: wrap; }
@@ -31,7 +50,7 @@
     <nav>
       <ul>
         <li>
-          <strong><span class="fa-solid fa-link" aria-hidden="true"></span> The Wikiest Link</strong>
+          <strong id="brand"><span class="fa-solid fa-link" aria-hidden="true"></span> The Wikiest Link</strong>
         </li>
         <li>
           <small>
