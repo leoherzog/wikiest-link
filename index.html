@@ -3,8 +3,63 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Wikiest Link · Host</title>
+  <title>The Wikiest Link · Wikipedia Pageviews Game Show</title>
+  <meta name="description" content="Host a Wikipedia pageviews game show. Players name things that fit a Wikipedia list, and each answer scores by its share of the past year's views.">
+  <meta name="author" content="Leo Herzog">
+  <meta name="theme-color" content="#bd3c13">
+  <link rel="canonical" href="https://wikiestlink.spitball.show/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <!-- Link previews need absolute URLs, so these name the deployed origin. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="The Wikiest Link">
+  <meta property="og:title" content="The Wikiest Link · Wikipedia Pageviews Game Show">
+  <meta property="og:description" content="Host a Wikipedia pageviews game show. Players name things that fit a Wikipedia list, and each answer scores by its share of the past year's views.">
+  <meta property="og:url" content="https://wikiestlink.spitball.show/">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:image" content="https://wikiestlink.spitball.show/og-image.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The Wikiest Link wordmark in orange marker lettering, the tagline “A Wikipedia pageviews game show”, and chips reading “Market Share · most views wins” and “Niche Market · fewest views wins”.">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://wikiestlink.spitball.show/#website",
+          "name": "The Wikiest Link",
+          "url": "https://wikiestlink.spitball.show/",
+          "inLanguage": "en-US",
+          "publisher": { "@id": "https://spitball.show/#organization" }
+        },
+        {
+          "@type": "WebApplication",
+          "@id": "https://wikiestlink.spitball.show/#app",
+          "name": "The Wikiest Link",
+          "url": "https://wikiestlink.spitball.show/",
+          "description": "Host a Wikipedia pageviews game show. Players name things that fit a Wikipedia list, and each answer scores by its share of the past year's views.",
+          "image": "https://wikiestlink.spitball.show/og-image.png",
+          "applicationCategory": "GameApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires JavaScript",
+          "isAccessibleForFree": true,
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "author": { "@type": "Person", "name": "Leo Herzog", "url": "https://herzog.tech/" },
+          "publisher": { "@id": "https://spitball.show/#organization" },
+          "isPartOf": { "@id": "https://wikiestlink.spitball.show/#website" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://spitball.show/#organization",
+          "name": "Spitball — Startup Ideas on Tap",
+          "url": "https://spitball.show"
+        }
+      ]
+    }
+  </script>
   <script src="js/theme.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.orange.min.css"
     integrity="sha384-Lm2BRg+RVlMvrTWma56pxmcU1F+JLC10iu1gmc37k8aBIhcsVT4htOZ7eubKpUV7" crossorigin="anonymous">
@@ -19,7 +74,10 @@
     }
     /* Acme and Permanent Marker ship one weight, so bold text in them keeps it instead of a synthesized bold. */
     h1, h2, h3, h4, h5, h6 { --pico-font-family: var(--display-font); font-synthesis-weight: none; }
+    /* The wordmark is the page's h1, so it drops Pico's heading margin and tight line height. */
     #brand {
+      margin: 0;
+      line-height: inherit;
       font-family: var(--marker-font);
       font-size: 1.25rem;
       font-synthesis-weight: none;
@@ -31,6 +89,9 @@
     /* Pico shrinks grouped buttons to their narrowest width, and browsers may break a line right after an icon. */
     [role=group] > button, [role=search] > button, nav button { white-space: nowrap; }
     #player-buttons { flex-wrap: wrap; }
+    /* The grid gap spaces the welcome cards, so they drop Pico's card and paragraph bottom margins. */
+    #welcome .grid { margin-bottom: var(--pico-block-spacing-vertical); }
+    #welcome article, #welcome article > :last-child { margin-bottom: 0; }
     /* On narrow screens the header buttons wrap below the title, still right-aligned. */
     nav { flex-wrap: wrap; }
     nav ul:last-of-type { margin-left: auto; }
@@ -50,7 +111,7 @@
     <nav>
       <ul>
         <li>
-          <strong id="brand"><span class="fa-solid fa-link" aria-hidden="true"></span> The Wikiest Link</strong>
+          <h1 id="brand"><span class="fa-solid fa-link" aria-hidden="true"></span> The Wikiest Link</h1>
         </li>
         <li>
           <small>
@@ -77,6 +138,43 @@
 
   <main class="container">
     <div id="message" role="status"></div>
+
+    <section id="welcome" hidden>
+      <hgroup>
+        <h2>The game show where Wikipedia keeps score</h2>
+        <p>Pick a Wikipedia list, name what's on it, and let a year of pageviews decide who wins.</p>
+      </hgroup>
+      <div class="grid">
+        <article>
+          <h3><span class="fa-solid fa-list-ul" aria-hidden="true"></span> Pick a category</h3>
+          <p>
+            Search for any English Wikipedia page, like a list of national parks or Best Picture winners. The board
+            fills with every entry it links to, along with how often each was read over the past year.
+          </p>
+        </article>
+        <article>
+          <h3><span class="fa-solid fa-comments" aria-hidden="true"></span> Name what fits</h3>
+          <p>
+            Players take turns naming entries while the host types them in. The host can look up answers that aren't
+            on the board and rule whether they count.
+          </p>
+        </article>
+        <article>
+          <h3><span class="fa-solid fa-chart-simple" aria-hidden="true"></span> Score by pageviews</h3>
+          <p>
+            In Market Share, the board's most-read entry scores 100 and other answers score their share of it. Niche
+            Market flips the scale, so obscure picks win. Misses score nothing.
+          </p>
+        </article>
+      </div>
+      <p>
+        The host runs the game from this page and screen-shares a pop-out scoreboard with up to six players. It all
+        runs in your browser with no sign-up, and the game saves as you play.
+      </p>
+      <button type="button" id="start-new-game">
+        <span class="fa-solid fa-play" aria-hidden="true"></span> Start new game
+      </button>
+    </section>
 
     <section id="lobby" hidden>
       <h2><span class="fa-solid fa-users" aria-hidden="true"></span> Players</h2>
@@ -310,7 +408,7 @@
       </table>
     </section>
 
-    <details>
+    <details id="settings">
       <summary><span class="fa-solid fa-gear" aria-hidden="true"></span> Settings</summary>
       <form id="settings-form">
         <label>

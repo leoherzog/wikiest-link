@@ -19,9 +19,11 @@ Publish the repository root on any static host. On GitHub Pages, deploy from you
 
 Cloudflare Pages applies the Content Security Policy in `_headers`. GitHub Pages and local servers ignore the file, so a violation shows up only once deployed: the policy blocks inline scripts, and any new origin must be added to it. It allows inline styles for the `<style>` element Font Awesome injects and for Wikipedia's HTML, which the parsed copy checks against the page's policy. It allows `data:` images because Pico draws its checkboxes and select chevrons that way.
 
+Link previews and search engines need absolute URLs, so the host page's canonical link, Open Graph tags and structured data, along with `robots.txt` and `sitemap.xml`, name `https://wikiestlink.spitball.show/`. Change all of them if the site moves. The scoreboard carries `noindex`, since it shows nothing without the host's game.
+
 ## How a game runs
 
-1. Add up to six players, reorder them, and press "Start game".
+1. Press "Start new game" on the welcome page, which explains the game to first-time visitors and search engines. Add up to six players, reorder them, and press "Start game".
 2. Search for a category page or paste its URL to build its board. Finished boards are cached per title and twelve-month period, so rebuilding one is instant.
 3. Review the board, pick Market Share or Niche Market, mark the final round, and press "Start round". It stays disabled until a checked item has pageviews.
 4. Type what each player says. Enter takes the top board match, and "Search Wikipedia" looks up anything off the board for you to rule on; Enter does the same when nothing on the board matches. "Miss" records 0, "Undo last" reverses the latest pick, and a status line under the answer box reads back the last pick and who is up. Click a player's name to give them the next answer out of turn.
@@ -68,6 +70,9 @@ The host console is the only writer. The scoreboard re-renders on `storage` even
 | `js/dom.js` | Element lookup, number formatting, icons, and round type copy shared by both pages |
 | `css/app.css` | Scoreboard stage, type scaling, fonts and mark colors; the host's few rules sit in `index.html` |
 | `favicon.svg` | Tab icon: Font Awesome's `link` in Pico's orange-550, or orange-350 in dark mode, as literal hex because an SVG image cannot read CSS variables |
+| `apple-touch-icon.png` | Home screen icon: the favicon's link on Pico's dark background, opaque because iOS fills transparency with black |
+| `og-image.png` | 1200×630 link preview card in the scoreboard's dark style |
+| `robots.txt`, `sitemap.xml` | Crawler rules and the one-page sitemap |
 | `_headers` | Content Security Policy for Cloudflare Pages |
 
 Both pages load Pico CSS 2.1.1's orange theme, `pico.orange.min.css`, from jsDelivr with a Subresource Integrity hash, so a version change means updating `integrity` in both pages. They load the Acme and Permanent Marker fonts from Fontsource on jsDelivr the same way, hashing each package's `index.css`, because jsDelivr minifies `.min.css` files on request and their hashes can change. Headings and the scoreboard's labels, names and scores use Acme, and the host's wordmark and the scoreboard's title use Permanent Marker. The scoreboard also loads Pico's color palette, `pico.colors.min.css`, from the floating `@2` tag with no integrity hash, and takes its amber and violet mark colors from it. They also load Font Awesome Free 7 from jsDelivr. Icons are `<span class="fa-solid fa-…">` elements, built in scripts with `icon()` from `js/dom.js`, and Font Awesome's script swaps each for an inline SVG, including spans added later.

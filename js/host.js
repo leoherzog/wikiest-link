@@ -84,8 +84,16 @@ function openScoreboard() {
 }
 
 function renderHeader() {
-  $('open-scoreboard').hidden = state.phase === 'lobby' && !popupBlocked;
+  $('open-scoreboard').hidden = (state.phase === 'welcome' || state.phase === 'lobby') && !popupBlocked;
 }
+
+// ---------- Welcome ----------
+
+$('start-new-game').addEventListener('click', function () {
+  state.phase = 'lobby';
+  commit();
+  $('add-player').elements.name.focus();
+});
 
 // ---------- Lobby ----------
 
@@ -1041,6 +1049,8 @@ $('confirm-new').addEventListener('close', function (event) {
   if (!confirmed) return;
   Object.keys(controllers).forEach(restart);
   const fresh = defaultState();
+  // The players stay, so a new game skips the welcome page.
+  fresh.phase = 'lobby';
   fresh.players = state.players;
   fresh.nextId = state.nextId;
   fresh.settings = state.settings;
@@ -1053,11 +1063,19 @@ $('confirm-new').addEventListener('close', function (event) {
 
 // ---------- Render and restore ----------
 
-// Each phase has a section with the same id.
-const PHASES = { lobby: renderLobby, setup: renderSetup, playing: renderPlay, ended: renderEnded, over: renderOver };
+// Each phase has a section with the same id. The welcome section is static.
+const PHASES = {
+  welcome: function () {},
+  lobby: renderLobby,
+  setup: renderSetup,
+  playing: renderPlay,
+  ended: renderEnded,
+  over: renderOver
+};
 
 function render() {
   Object.keys(PHASES).forEach(function (phase) { $(phase).hidden = phase !== state.phase; });
+  $('settings').hidden = state.phase === 'welcome';
   renderHeader();
   PHASES[state.phase]();
   renderSettings();

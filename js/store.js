@@ -37,11 +37,11 @@ export function periodLabel(period) {
 }
 
 /**
- * Fresh game state. Phases: lobby → setup → playing → ended → (setup …) → over.
+ * Fresh game state. Phases: welcome → lobby → setup → playing → ended → (setup …) → over.
  * @returns {object}
  */
 export function defaultState() {
-  return { settings: { picksPerPlayer: 2, order: 'snake' }, players: [], nextId: 1, phase: 'lobby', rounds: [] };
+  return { settings: { picksPerPlayer: 2, order: 'snake' }, players: [], nextId: 1, phase: 'welcome', rounds: [] };
 }
 
 /**
