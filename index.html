@@ -21,7 +21,7 @@
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="The Wikiest Link wordmark in orange marker lettering, the tagline “A Wikipedia pageviews game show”, and chips reading “Market Share · most views wins” and “Niche Market · fewest views wins”.">
+  <meta property="og:image:alt" content="The Wikiest Link wordmark in orange marker lettering above the tagline “A Wikipedia pageviews game show” and the credit “A game by Spitball — Startup Ideas on Tap”.">
   <meta name="twitter:card" content="summary_large_image">
   <script type="application/ld+json">
     {
@@ -92,6 +92,7 @@
     /* The grid gap spaces the welcome cards, so they drop Pico's card and paragraph bottom margins. */
     #welcome .grid { margin-bottom: var(--pico-block-spacing-vertical); }
     #welcome article, #welcome article > :last-child { margin-bottom: 0; }
+    body > footer { color: var(--pico-muted-color); }
     /* On narrow screens the header buttons wrap below the title, still right-aligned. */
     nav { flex-wrap: wrap; }
     nav ul:last-of-type { margin-left: auto; }
@@ -433,6 +434,10 @@
       </form>
     </details>
   </main>
+
+  <footer class="container">
+    <small>A game by <a href="https://spitball.show" target="_blank">Spitball — Startup Ideas on Tap</a></small>
+  </footer>
 
   <dialog id="confirm-new" aria-labelledby="confirm-new-title">
     <article>

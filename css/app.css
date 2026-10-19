@@ -11,7 +11,7 @@
 }
 
 /* Acme and Permanent Marker ship one weight, so bold text in them keeps it instead of a synthesized bold. */
-h2, nav, mark, #sb-players > article > p, #sb-standings, #sb-upnext {
+h2, nav, mark, #sb-players > article > p, #sb-standings, #sb-footer {
   font-family: var(--display-font);
   font-synthesis-weight: none;
 }
@@ -117,4 +117,17 @@ h1 {
 #sb-reveal table,
 #sb-standings table {
   font-size: 1.5rem;
+}
+
+/* Up next and the credit share the bottom row, which stays at the stage's foot when no section fills it. */
+#sb-footer {
+  display: flex;
+  align-items: baseline;
+  gap: var(--pico-spacing);
+  margin-top: auto;
+}
+
+#sb-credit {
+  margin-left: auto;
+  color: var(--pico-muted-color);
 }
