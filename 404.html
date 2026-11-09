@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page Not Found · The Wikiest Link</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#bd3c13">
+  <!-- Cloudflare Pages serves this page with a 404 at any unknown path, so local URLs start at the root. -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <script src="/js/theme.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2.1.1/css/pico.orange.min.css"
+    integrity="sha384-Lm2BRg+RVlMvrTWma56pxmcU1F+JLC10iu1gmc37k8aBIhcsVT4htOZ7eubKpUV7" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/acme@5.3.0/index.css"
+    integrity="sha384-U2Cwo4qBTs74k28Xy82giXTL4Hl4gcASesb5uRlclWjZdE051iTEwHlW05jSvPJi" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/permanent-marker@5.3.0/index.css"
+    integrity="sha384-CMsh6IR48JKQQPH0gJJDTlh/8atPvP99yKNCRbdaYanh1YOamHlq4z3zfA6Ady11" crossorigin="anonymous">
+  <style>
+    :root {
+      --display-font: Acme, var(--pico-font-family-sans-serif);
+      --marker-font: 'Permanent Marker', 'Segoe Print', 'Bradley Hand', Chilanka, casual, cursive;
+    }
+    /* Acme and Permanent Marker ship one weight, so bold text in them keeps it instead of a synthesized bold. */
+    h1 { --pico-font-family: var(--display-font); font-synthesis-weight: none; }
+    #brand {
+      font-family: var(--marker-font);
+      font-synthesis-weight: none;
+      font-size: 1.25rem;
+      color: var(--pico-primary);
+      background: linear-gradient(90deg, var(--pico-primary), var(--pico-primary-hover));
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    #brand a { color: inherit; text-decoration: none; }
+    nav ul:last-of-type { margin-left: auto; }
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: max(20rem, 100svh - 14rem);
+      text-align: center;
+    }
+    main > .fa-link-slash {
+      font-size: clamp(3rem, 10vw, 5rem);
+      color: var(--pico-primary);
+    }
+    main hgroup { margin-block: 1rem 1.5rem; }
+    main [role=button] { font-family: var(--display-font); font-size: 1.25rem; }
+    body > footer { color: var(--pico-muted-color); }
+    /* Font Awesome keeps each fa-NAME class on the SVG it swaps in, so only the current theme's icon shows. */
+    :root[data-theme] #theme .fa-circle-half-stroke,
+    :root:not([data-theme=light]) #theme .fa-sun,
+    :root:not([data-theme=dark]) #theme .fa-moon { display: none; }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7/js/all.min.js"
+    data-mutate-approach="sync"></script>
+</head>
+<body>
+  <header class="container">
+    <nav>
+      <ul>
+        <li>
+          <strong id="brand">
+            <a href="/"><span class="fa-solid fa-link" aria-hidden="true"></span> The Wikiest Link</a>
+          </strong>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <button type="button" id="theme" class="secondary outline" aria-label="Theme: auto" title="Theme: auto">
+            <span class="fa-solid fa-circle-half-stroke" aria-hidden="true"></span>
+            <span class="fa-solid fa-sun" aria-hidden="true"></span>
+            <span class="fa-solid fa-moon" aria-hidden="true"></span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <span class="fa-solid fa-link-slash" aria-hidden="true"></span>
+    <hgroup>
+      <h1>Page not found</h1>
+      <p>That answer isn't on the board, so it scores 0.</p>
+    </hgroup>
+    <a href="/" role="button">
+      <span class="fa-solid fa-house" aria-hidden="true"></span> Back to The Wikiest Link
+    </a>
+  </main>
+
+  <footer class="container">
+    <small>A game by <a href="https://spitball.show" target="_blank">Spitball — Startup Ideas on Tap</a></small>
+  </footer>
+</body>
+</html>

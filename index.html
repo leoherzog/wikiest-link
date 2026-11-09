@@ -6,6 +6,7 @@
   <title>The Wikiest Link · Wikipedia Pageviews Game Show</title>
   <meta name="description" content="Host a Wikipedia pageviews game show. Players name things that fit a Wikipedia list, and each answer scores by its share of the past year's views.">
   <meta name="author" content="Leo Herzog">
+  <meta name="robots" content="max-image-preview:large">
   <meta name="theme-color" content="#bd3c13">
   <link rel="canonical" href="https://wikiestlink.spitball.show/">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -36,17 +37,19 @@
           "publisher": { "@id": "https://spitball.show/#organization" }
         },
         {
-          "@type": "WebApplication",
+          "@type": ["WebApplication", "Game"],
           "@id": "https://wikiestlink.spitball.show/#app",
           "name": "The Wikiest Link",
           "url": "https://wikiestlink.spitball.show/",
           "description": "Host a Wikipedia pageviews game show. Players name things that fit a Wikipedia list, and each answer scores by its share of the past year's views.",
           "image": "https://wikiestlink.spitball.show/og-image.png",
+          "inLanguage": "en-US",
           "applicationCategory": "GameApplication",
           "operatingSystem": "Any",
           "browserRequirements": "Requires JavaScript",
           "isAccessibleForFree": true,
           "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+          "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 6 },
           "author": { "@type": "Person", "name": "Leo Herzog", "url": "https://herzog.tech/" },
           "publisher": { "@id": "https://spitball.show/#organization" },
           "isPartOf": { "@id": "https://wikiestlink.spitball.show/#website" }
@@ -55,7 +58,12 @@
           "@type": "Organization",
           "@id": "https://spitball.show/#organization",
           "name": "Spitball — Startup Ideas on Tap",
-          "url": "https://spitball.show"
+          "url": "https://spitball.show",
+          "logo": "https://media.spitball.show/cover.png",
+          "sameAs": [
+            "https://bsky.app/profile/spitball.show",
+            "https://www.youtube.com/playlist?list=PLKOJ5bfIFuPnuvqs33yc3g7XEUqes-cNe"
+          ]
         }
       ]
     }

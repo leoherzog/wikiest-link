@@ -19,7 +19,9 @@ Publish the repository root on any static host. On GitHub Pages, deploy from you
 
 Cloudflare Pages applies the Content Security Policy in `_headers`. GitHub Pages and local servers ignore the file, so a violation shows up only once deployed: the policy blocks inline scripts, and any new origin must be added to it. It allows inline styles for the `<style>` element Font Awesome injects and for Wikipedia's HTML, which the parsed copy checks against the page's policy. It allows `data:` images because Pico draws its checkboxes and select chevrons that way.
 
-Link previews and search engines need absolute URLs, so the host page's canonical link, Open Graph tags and structured data, along with `robots.txt` and `sitemap.xml`, name `https://wikiestlink.spitball.show/`. Change all of them if the site moves. The scoreboard carries `noindex`, since it shows nothing without the host's game.
+Link previews and search engines need absolute URLs, so the host page's canonical link, Open Graph tags and structured data, along with `robots.txt` and `sitemap.xml`, name `https://wikiestlink.spitball.show/`. Change all of them if the site moves. The structured data's `numberOfPlayers` repeats `MAX_PLAYERS` in `js/host.js`, so change them together. The scoreboard carries `noindex`, since it shows nothing without the host's game.
+
+Cloudflare Pages serves `404.html` with a 404 status at any unknown path. Without it, Pages would answer every path with the host page and a 200. The page can appear at any depth, so its local URLs start with `/`, and it carries `noindex` too.
 
 ## How a game runs
 
@@ -62,7 +64,7 @@ The host console is the only writer. The scoreboard re-renders on `storage` even
 | File | Role |
 | --- | --- |
 | `index.html`, `js/host.js` | Host console |
-| `js/theme.js` | Host theme button; a blocking script in `<head>` so the saved theme applies before first paint |
+| `js/theme.js` | Theme button for the host console and 404 page; a blocking script in `<head>` so the saved theme applies before first paint |
 | `scoreboard.html`, `js/scoreboard.js` | Screen-shared scoreboard |
 | `js/store.js` | State, persistence, board cache, cross-window sync |
 | `js/wiki.js` | Wikipedia and pageviews client, board building |
@@ -72,10 +74,11 @@ The host console is the only writer. The scoreboard re-renders on `storage` even
 | `favicon.svg` | Tab icon: Font Awesome's `link` in Pico's orange-550, or orange-350 in dark mode, as literal hex because an SVG image cannot read CSS variables |
 | `apple-touch-icon.png` | Home screen icon: the favicon's link on Pico's dark background, opaque because iOS fills transparency with black |
 | `og-image.png` | 1200×630 link preview card in the scoreboard's dark style |
+| `404.html` | Not-found page Cloudflare Pages serves for unknown paths |
 | `robots.txt`, `sitemap.xml` | Crawler rules and the one-page sitemap |
 | `_headers` | Content Security Policy for Cloudflare Pages |
 
-Both pages load Pico CSS 2.1.1's orange theme, `pico.orange.min.css`, from jsDelivr with a Subresource Integrity hash, so a version change means updating `integrity` in both pages. They load the Acme and Permanent Marker fonts from Fontsource on jsDelivr the same way, hashing each package's `index.css`, because jsDelivr minifies `.min.css` files on request and their hashes can change. Headings and the scoreboard's labels, names and scores use Acme, and the host's wordmark and the scoreboard's title use Permanent Marker. The scoreboard also loads Pico's color palette, `pico.colors.min.css`, from the floating `@2` tag with no integrity hash, and takes its amber and violet mark colors from it. They also load Font Awesome Free 7 from jsDelivr. Icons are `<span class="fa-solid fa-…">` elements, built in scripts with `icon()` from `js/dom.js`, and Font Awesome's script swaps each for an inline SVG, including spans added later.
+All three pages load Pico CSS 2.1.1's orange theme, `pico.orange.min.css`, from jsDelivr with a Subresource Integrity hash, so a version change means updating `integrity` in each. They load the Acme and Permanent Marker fonts from Fontsource on jsDelivr the same way, hashing each package's `index.css`, because jsDelivr minifies `.min.css` files on request and their hashes can change. Headings and the scoreboard's labels, names and scores use Acme, and the host's wordmark and the scoreboard's title use Permanent Marker. The scoreboard also loads Pico's color palette, `pico.colors.min.css`, from the floating `@2` tag with no integrity hash, and takes its amber and violet mark colors from it. They also load Font Awesome Free 7 from jsDelivr. Icons are `<span class="fa-solid fa-…">` elements, built in scripts with `icon()` from `js/dom.js`, and Font Awesome's script swaps each for an inline SVG, including spans added later.
 
 ## License
 

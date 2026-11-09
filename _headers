@@ -1,4 +1,4 @@
-# Cloudflare Pages response headers. /* also covers /scoreboard and the index.html fallback Pages serves for unknown paths.
+# Cloudflare Pages response headers. /* also covers /scoreboard and the 404.html Pages serves for unknown paths.
 # style-src needs 'unsafe-inline' for the <style> Font Awesome injects and for the inline styles in Wikipedia HTML,
 # which documents parsed with DOMParser check against this policy. img-src needs data: for Pico's form icons.
 /*
